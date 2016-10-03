@@ -53,8 +53,6 @@ L.EditToolbar.Edit = L.Handler.extend({
 		var map = this._map;
 
 		if (map) {
-			map.getContainer().focus();
-
 			this._featureGroup.eachLayer(this._enableLayerEdit, this);
 
 			this._tooltip = new L.Tooltip(this._map);
@@ -72,8 +70,11 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.on('mousemove', this._onMouseMove, this)
 				.on('touchmove', this._onMouseMove, this)
 				.on('MSPointerMove', this._onMouseMove, this)
-				.on('click', this._editStyle, this)
 				.on('draw:editvertex', this._updateTooltip, this);
+
+			if(this._editStyle) {
+				this._map.on('click', this._editStyle, this);
+			}
 		}
 	},
 
@@ -92,8 +93,11 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.off('mousemove', this._onMouseMove, this)
 				.off('touchmove', this._onMouseMove, this)
 				.off('MSPointerMove', this._onMouseMove, this)
-				.off('click', this._editStyle, this)
 				.off('draw:editvertex', this._updateTooltip, this);
+
+			if(this._editStyle) {
+				this._map.off('click', this._editStyle, this);
+			}
 		}
 	},
 
@@ -112,6 +116,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 			}
 		});
 		this._map.fire('draw:edited', {layers: editedLayers});
+		return editedLayers;
 	},
 
 	_backupLayer: function (layer) {

@@ -54,8 +54,6 @@ L.EditToolbar.Delete = L.Handler.extend({
 		var map = this._map;
 
 		if (map) {
-			map.getContainer().focus();
-
 			this._deletableLayers.eachLayer(this._enableLayerDelete, this);
 			this._deletedLayers = new L.LayerGroup();
 

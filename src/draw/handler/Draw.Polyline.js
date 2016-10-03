@@ -140,7 +140,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	deleteLastVertex: function () {
-		if (this._markers.length <= 1) {
+		if (this._markers && this._markers.length <= 1) {
 			return;
 		}
 
@@ -158,6 +158,8 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	addVertex: function (latlng) {
+		if(!this._markers) return;
+
 		var markersLength = this._markers.length;
 
 		if (markersLength > 0 && !this.options.allowIntersection && this._poly.newLatLngIntersects(latlng)) {
@@ -180,7 +182,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	completeShape: function () {
-		if (this._markers.length <= 1) {
+		if (this._markers && this._markers.length <= 1) {
 			return;
 		}
 
@@ -214,7 +216,7 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	_onZoomEnd: function () {
-		if (this._markers !== null) {
+		if (this._markers) {
 			this._updateGuide();
 		}
 	},
