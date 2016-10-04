@@ -96,6 +96,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 			}
 		});
 		this._map.fire('draw:edited', {layers: editedLayers});
+		return editedLayers;
 	},
 
 	_backupLayer: function (layer) {
@@ -103,7 +104,11 @@ L.EditToolbar.Edit = L.Handler.extend({
 
 		if (!this._uneditedLayerProps[id]) {
 			// Polyline, Polygon or Rectangle
-			if (layer instanceof L.Polyline || layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+			if (layer instanceof L.Polygon) {
+				this._uneditedLayerProps[id] = {
+					latlngs: L.LatLngUtil.clonePolygonLatLngs(layer.getLatLngs())
+				};
+			} else if (layer instanceof L.Polyline || layer instanceof L.Rectangle) {
 				this._uneditedLayerProps[id] = {
 					latlngs: L.LatLngUtil.cloneLatLngs(layer.getLatLngs())
 				};

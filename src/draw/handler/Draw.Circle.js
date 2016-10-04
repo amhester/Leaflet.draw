@@ -53,6 +53,7 @@ L.Draw.Circle = L.Draw.SimpleShape.extend({
 
 			// Get the new radius (rounded to 1 dp)
 			radius = this._shape.getRadius().toFixed(1);
+			this._map.fire('draw:resize', { layer: this._shape, layerType: 'circle' });
 
 			this._tooltip.updateContent({
 				text: this._endLabelText,

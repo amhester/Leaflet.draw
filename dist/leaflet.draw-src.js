@@ -915,6 +915,7 @@ L.Draw.Circle = L.Draw.SimpleShape.extend({
 
 			// Get the new radius (rounded to 1 dp)
 			radius = this._shape.getRadius().toFixed(1);
+			this._map.fire('draw:resize', { layer: this._shape, layerType: 'circle' });
 
 			this._tooltip.updateContent({
 				text: this._endLabelText,
@@ -1651,6 +1652,7 @@ L.Edit.Circle = L.Edit.SimpleShape.extend({
 			radius = moveLatLng.distanceTo(latlng);
 
 		this._shape.setRadius(radius);
+		this._map.fire('draw:editresize', { layer: this._shape, layerType: 'circle' });
 	}
 });
 
@@ -1686,6 +1688,14 @@ L.LatLngUtil = {
 		var clone = [];
 		for (var i = 0, l = latlngs.length; i < l; i++) {
 			clone.push(this.cloneLatLng(latlngs[i]));
+		}
+		return clone;
+	},
+
+	clonePolygonLatLngs: function (latlngs) {
+		var clone = [];
+		for (var i = 0, l = latlngs.length; i < l; i++) {
+			clone.push(this.cloneLatLngs(latlngs[i]));
 		}
 		return clone;
 	},
@@ -2646,6 +2656,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 			}
 		});
 		this._map.fire('draw:edited', {layers: editedLayers});
+		return editedLayers;
 	},
 
 	_backupLayer: function (layer) {
@@ -2653,7 +2664,11 @@ L.EditToolbar.Edit = L.Handler.extend({
 
 		if (!this._uneditedLayerProps[id]) {
 			// Polyline, Polygon or Rectangle
-			if (layer instanceof L.Polyline || layer instanceof L.Polygon || layer instanceof L.Rectangle) {
+			if (layer instanceof L.Polygon) {
+				this._uneditedLayerProps[id] = {
+					latlngs: L.LatLngUtil.clonePolygonLatLngs(layer.getLatLngs())
+				};
+			} else if (layer instanceof L.Polyline || layer instanceof L.Rectangle) {
 				this._uneditedLayerProps[id] = {
 					latlngs: L.LatLngUtil.cloneLatLngs(layer.getLatLngs())
 				};

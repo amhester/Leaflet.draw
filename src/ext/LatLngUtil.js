@@ -12,6 +12,14 @@ L.LatLngUtil = {
 		return clone;
 	},
 
+	clonePolygonLatLngs: function (latlngs) {
+		var clone = [];
+		for (var i = 0, l = latlngs.length; i < l; i++) {
+			clone.push(this.cloneLatLngs(latlngs[i]));
+		}
+		return clone;
+	},
+
 	cloneLatLng: function (latlng) {
 		return latlng.clone();
 	}
