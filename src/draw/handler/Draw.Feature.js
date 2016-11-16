@@ -42,7 +42,7 @@ L.Draw.Feature = L.Handler.extend({
 		if (map) {
 			L.DomUtil.disableTextSelection();
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.DrawTooltip(this._map);
 
 			L.DomEvent.on(this._container, 'keyup', this._cancelDrawing, this);
 		}

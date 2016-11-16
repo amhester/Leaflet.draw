@@ -155,7 +155,7 @@ L.Draw.Feature = L.Handler.extend({
 		if (map) {
 			L.DomUtil.disableTextSelection();
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.DrawTooltip(this._map);
 
 			L.DomEvent.on(this._container, 'keyup', this._cancelDrawing, this);
 		}
@@ -349,7 +349,9 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	addVertex: function (latlng) {
-		if(!this._markers) return;
+		if (!this._markers) {
+			return;
+		}
 
 		var markersLength = this._markers.length;
 
@@ -2877,7 +2879,7 @@ L.Toolbar = L.Class.extend({
 });
 
 
-L.Tooltip = L.Class.extend({
+L.DrawTooltip = L.Class.extend({
 	initialize: function (map) {
 		this._map = map;
 		this._popupPane = map._panes.popupPane;
@@ -3269,7 +3271,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 		if (map) {
 			this._featureGroup.eachLayer(this._enableLayerEdit, this);
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.DrawTooltip(this._map);
 			this._tooltip.updateContent({
 				text: L.drawLocal.edit.handlers.edit.tooltip.text,
 				subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
@@ -3286,7 +3288,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.on('MSPointerMove', this._onMouseMove, this)
 				.on('draw:editvertex', this._updateTooltip, this);
 
-			if(this._editStyle) {
+			if (this._editStyle) {
 				this._map.on('click', this._editStyle, this);
 			}
 		}
@@ -3309,7 +3311,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.off('MSPointerMove', this._onMouseMove, this)
 				.off('draw:editvertex', this._updateTooltip, this);
 
-			if(this._editStyle) {
+			if (this._editStyle) {
 				this._map.off('click', this._editStyle, this);
 			}
 		}
@@ -3534,7 +3536,7 @@ L.EditToolbar.Delete = L.Handler.extend({
 			this._deletableLayers.eachLayer(this._enableLayerDelete, this);
 			this._deletedLayers = new L.LayerGroup();
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.DrawTooltip(this._map);
 			this._tooltip.updateContent({ text: L.drawLocal.edit.handlers.remove.tooltip.text });
 
 			this._map.on('mousemove', this._onMouseMove, this);

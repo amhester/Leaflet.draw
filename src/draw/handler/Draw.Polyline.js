@@ -158,7 +158,9 @@ L.Draw.Polyline = L.Draw.Feature.extend({
 	},
 
 	addVertex: function (latlng) {
-		if(!this._markers) return;
+		if (!this._markers) {
+			return;
+		}
 
 		var markersLength = this._markers.length;
 

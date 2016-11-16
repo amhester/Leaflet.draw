@@ -55,7 +55,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 		if (map) {
 			this._featureGroup.eachLayer(this._enableLayerEdit, this);
 
-			this._tooltip = new L.Tooltip(this._map);
+			this._tooltip = new L.DrawTooltip(this._map);
 			this._tooltip.updateContent({
 				text: L.drawLocal.edit.handlers.edit.tooltip.text,
 				subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
@@ -72,7 +72,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.on('MSPointerMove', this._onMouseMove, this)
 				.on('draw:editvertex', this._updateTooltip, this);
 
-			if(this._editStyle) {
+			if (this._editStyle) {
 				this._map.on('click', this._editStyle, this);
 			}
 		}
@@ -95,7 +95,7 @@ L.EditToolbar.Edit = L.Handler.extend({
 				.off('MSPointerMove', this._onMouseMove, this)
 				.off('draw:editvertex', this._updateTooltip, this);
 
-			if(this._editStyle) {
+			if (this._editStyle) {
 				this._map.off('click', this._editStyle, this);
 			}
 		}
